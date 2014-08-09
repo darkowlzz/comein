@@ -7,13 +7,34 @@ app.use(logfmt.requestLogger());
 app.use(bodyParser.json());
 
 var shopStatus = false;
+var lastUpdated = new Date().getTime();
 
 app.get('/', function(req, res) {
-  res.send(shopStatus);
+  var diff = parseInt((new Date().getTime() - lastUpdated)/1000);
+  var hours = 0,
+      mins = 0,
+      secs = diff;
+  if (diff > 60) {
+    mins = diff/60;
+    secs = diff%60;
+    if (mins > 60) {
+      hours = mins/60;
+      mins = mins%60;
+    }
+  }
+  var updated = hours + " hours " + mins + " minutes " + secs +
+                " seconds ago";
+  var data = {
+    stat: shopStatus,
+    lastUpdate: updated
+  };
+  res.send(data);
 });
 
 app.post('/', function(req, res) {
   console.log('received a PoSt');
+  console.log('before change: ' + shopStatus);
+  console.log('last updated: ' + lastUpdated);
   console.log(req.body);
   try {
     var r = req.body;
@@ -21,10 +42,12 @@ app.post('/', function(req, res) {
     switch (r.shopStatus) {
       case true:
         shopStatus = true;
+        lastUpdated = new Date().getTime();
         res.send(true);
         break;
       case false:
         shopStatus = false;
+        lastUpdated = new Date().getTime();
         res.send(true);
         break
       default:
