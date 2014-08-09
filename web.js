@@ -11,19 +11,24 @@ var lastUpdated = new Date().getTime();
 
 app.get('/', function(req, res) {
   var diff = parseInt((new Date().getTime() - lastUpdated)/1000);
-  var hours = 0,
+  var days = 0,
+      hours = 0,
       mins = 0,
       secs = diff;
   if (diff > 60) {
-    mins = diff/60;
+    mins = parseInt(diff/60);
     secs = diff%60;
     if (mins > 60) {
-      hours = mins/60;
+      hours = parseInt(mins/60);
       mins = mins%60;
+      if (hours > 24) {
+        days = parseInt(hours/24);
+        hours = hours%24;
+      }
     }
   }
-  var updated = hours + " hours " + mins + " minutes " + secs +
-                " seconds ago";
+  var updated = days + ' days ' + hours + ' hours ' + mins + ' minutes '
+                + secs + ' seconds ago';
   var data = {
     stat: shopStatus,
     lastUpdate: updated
