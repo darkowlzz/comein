@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  div.signin
+    form#sign-in(action="/login", method="post")
+      div: h4 Sign in 
+      label Username
+        input#username(type="text", name="username")
+      label Password
+        input#password(type="password", name="password")
+      input(type="submit", value="Log In")
+
+  hr
+  div.signup
+    form#reg(action="/local-reg" method="post")
+      div: h4 Sign up
+      label Username
+        input#username(type="text", name="username")
+      label Password
+        input#password(type="password", name="password")
+      input(type="submit", value="Register")
