@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  h3 Find OPEN Places To Visit
+
+  if user
+    p #{user.username}, you are logged in
+    p: a(href="/logout") Logout
+
+  .login
+    a(href="/signin") Login
